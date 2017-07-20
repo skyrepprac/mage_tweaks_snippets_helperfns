@@ -1,0 +1,18 @@
+Clear Command Line History:
+history -cw && reset && clear
+cat /dev/null > ~/.bash_history && history -cw && reset && clear
+cat /dev/null > ~/.bash_history && history -cw && reset && tput reset
+
+Clear Magento caches:
+rm -rf var/cache/*
+
+Find in all files:
+grep -rnw ./ -e 'product-pricing'
+grep -rnw ./ -e 'Specials'
+
+Take backup of specific file:
+cp -p foo.txt foo.txt.`date +%Y.%m.%d.%H.%M.%S`
+cp -p <filename>.php <filename>.php.`date +%Y.%m.%d.%H.%M.%S`
+cp -p spacesToDashes.php spacesToDashes.php.`date +%Y.%m.%d.%H.%M.%S`
+cp -p spacesToDashes.php spacesToDashes.php.`date +%Y-%m-%d.%H-%M-%S`
+cp -p <filename> <filename>.`date +%Y-%m-%d.%H-%M-%S`
