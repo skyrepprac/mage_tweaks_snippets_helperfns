@@ -172,4 +172,19 @@ class Mage_Extended_Helper_Core_Functions extends Mage_Core_Helper_Data
 		}));
 		return $catIdCount;
 	}
+
+	protected function _arrayCount($array, $key, $value = NULL) {
+		// count($array[*][$key])
+		$c = 0;
+		if (is_null($value)) {
+			foreach($array as $i => $subarray) {
+				$c += ($subarray[$key] != '');
+			}
+		} else {
+			foreach($array as $i=>$subarray) {
+				$c += ($subarray[$key] == $value);
+			}
+		}
+		return $c;
+	}
 }
