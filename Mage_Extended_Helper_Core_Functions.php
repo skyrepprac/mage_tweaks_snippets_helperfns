@@ -158,4 +158,18 @@ class Mage_Extended_Helper_Core_Functions extends Mage_Core_Helper_Data
 		}
 		return $matchsCount;
 	}
+
+	protected function _countCatIdInCatIds($catIds, $catId) {
+		//$key = null;
+		$value = $catId;
+		$catIdCount = count(array_filter($catIds, function($element) use($key, $value) {
+			return $element[$key] == $value;
+		}));
+		$number = 15;
+		//Kolla ifall denna har subtasks?
+		echo count(array_filter($tasks, function($element) use ($number) {
+			return $element['parent'] == $number;
+		}));
+		return $catIdCount;
+	}
 }
