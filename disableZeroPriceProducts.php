@@ -16,10 +16,15 @@ $zeroPriceProducts = Mage::getModel('catalog/product')->getCollection()
 						);
 $ids = $zeroPriceProducts->getAllIds();
 try {
+	/*Mage::getSingleton('catalog/product_action')->updateAttributes(
+		$ids,
+		array('status' => 2),
+		0
+	);*/
 	Mage::getSingleton('catalog/product_action')->updateAttributes(
-	    $ids,
-	    array('status' => 2),
-	    0
+		$ids,
+		array('status' => 2, 'visibility' => 1),
+		0
 	);
 	echo "All products with 0 price have been disabled !!!";
 } catch(Exception $e) {
