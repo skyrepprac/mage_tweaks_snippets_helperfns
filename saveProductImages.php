@@ -37,7 +37,7 @@ function downloadWithCurl($file) {
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $file);
 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-    curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
+	curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
 	curl_setopt($ch, CURLOPT_HEADER, 0);
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
