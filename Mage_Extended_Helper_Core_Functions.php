@@ -187,4 +187,20 @@ class Mage_Extended_Helper_Core_Functions extends Mage_Core_Helper_Data
 		}
 		return $c;
 	}
+	
+	public function applyRecursivePermissions($path, $permission = 0777, $reset = false) {
+		$dir = new DirectoryIterator($path);
+		foreach($dir as $item) {
+			if($reset === true) {
+				if($item->isDir()) $this->applyRecursivePermissions($item->getPathname(), 0755);
+				else chmod($item->getPathname(), 0644);
+				return $reset;
+			} else {
+				chmod($item->getPathname(), $permission);
+				if($item->isDir() && !$item->isDot()) {
+					$this->applyRecursivePermissions($item->getPathname(), $permission);
+				}
+			}
+		}
+	}
 }
