@@ -9,6 +9,12 @@ rm -rf var/cache/*
 Find in all files:
 grep -rnw ./ -e 'product-pricing'
 grep -rnw ./ -e 'Specials'
+s_method_matrixrate_matrixrate_1
+grep -rnw  --include=*.php ./ -e 'matrixrate'
+grep -rnw --include=*.phtml ./ -e 'class="shopping-form"'
+grep -rnw --include=*.phtml ./ -e 'class="available'
+grep -rnw --include=*.php ./ -e 'n isAvailable()'
+grep -rnw --include=*.phtml ./ -e 'for="billing:ssn"'
 
 Take backup of specific file:
 cp -p foo.txt foo.txt.`date +%Y.%m.%d.%H.%M.%S`
@@ -16,3 +22,99 @@ cp -p <filename>.php <filename>.php.`date +%Y.%m.%d.%H.%M.%S`
 cp -p spacesToDashes.php spacesToDashes.php.`date +%Y.%m.%d.%H.%M.%S`
 cp -p spacesToDashes.php spacesToDashes.php.`date +%Y-%m-%d.%H-%M-%S`
 cp -p <filename> <filename>.`date +%Y-%m-%d.%H-%M-%S`
+cp file.{ext,bak.ext}
+cp $FILE.{$EXTENTION,bak.$EXTENTION}
+
+Compress specific directory to BZ2:
+Note: Take backup of Live app, skin, js directories everytime before you change the template on the Live server
+tar -cjf app.tar.bz2 app/
+tar -cjf app.`date +%Y-%m-%d.%H-%M-%S`.tar.bz2 app/
+
+Remove "var/session" files older than X days:
+find var/session/* -mtime +X -exec rm {} \;
+find var/session/* -mtime +180 -exec rm {} \;
+/usr/bin/find /home/myuser/public_html/var/session -mindepth 1 -maxdepth 1 -type f -cmin +$(/usr/lib/php5/maxlifetime) -print0 -exec rm {} \; >/dev/null 2>&1
+/var/www/websites/athenalife.com/public_html/shop/var/session -mindepth 1 -maxdepth 1 -type f -cmin +$(/usr/lib/php5/maxlifetime) -print0 -exec rm {} \; >/dev/null 2>&1
+
+Find the file by name in Terminal/SSH
+find ./ -name "<filename>"
+find ./ -name "Tablerate.php"
+
+Search for string(may contain spaces) in the directory structure and print the results in txt file:
+@echo off
+setlocal Enabledelayedexpansion
+
+set RESULT_FILE="result.txt"
+set /p STR="Enter the String to Find: "
+
+:: Remove just outer quotes not quotes that are inside
+set STR=###!STR!###
+set STR=!STR:"###=!
+set STR=!STR:###"=!
+set STR=!STR:###=!
+
+pushd %~p0
+type NUL > %RESULT_FILE%.tmp
+for /f "delims=" %%a in ('dir /B /S /A-D *.phtml') do (
+   for /f "tokens=3 delims=:" %%c in ('find /i /c "%STR%" "%%a"') do (
+      for /f "tokens=*" %%f in ('find /i "%STR%" "%%a"') do if %%c neq 0 echo %%f
+   )
+) >> "%RESULT_FILE%".tmp
+move %RESULT_FILE%.tmp %RESULT_FILE% >nul 2>&1
+
+:: Open the file
+"%RESULT_FILE%"
+popd
+
+:: Backup file be appending current timestamp to it's name
+::cd to the <Target> directory then execute below commands
+touch "<filename>.backup.$(date +%F_%R)"
+touch "editmpbundleproduct.phtml.backup.$(date +%F_%R)"
+touch "editmpbundleproduct.phtml.bak.$(date +%F_%R)"
+cp -p <filename> <filename>.`date +%Y.%m.%d.%H.%M.%S`
+cp -p editmpbundleproduct.phtml editmpbundleproduct.phtml.`date +%Y.%m.%d.%H.%M.%S`
+cp <filename> {,.backup. $((date)) }
+cp editmpbundleproduct.phtml {,.backup. $((date)) }
+cp <filename>.{<extension>,backup."$(date +%Y%m%d-%H%M%S)"}
+cp editmpbundleproduct.{phtml,backup."$(date +%Y%m%d-%H%M%S)"}
+cp editmpbundleproduct.{phtml,bak."$(date +%Y%m%d-%H%M%S)"}
+cp editmpbundleproduct.phtml_{bak."$(date +%Y%m%d-%H%M%S)"}
+cp <filename> <filename>.bak.$(date --iso-8601=seconds)
+cp editmpbundleproduct.phtml editmpbundleproduct.phtml.bak.$(date --iso-8601=seconds)
+cp editmpbundleproduct.phtml editmpbundleproduct.phtml_bak.$(date --iso-8601=seconds)
+
+:: Copy all content from folder "Parent" into "Child1" except "Child1"
+shopt -s extglob
+cd Parent
+cp !(Child1) Child1/
+:: Example:
+currDir=$(pwd) 
+shopt -s extglob
+cp !($PWD/bakfiles) bakfiles/
+cp -p !($PWD/bakfiles2) bakfiles2/
+cp --parents !($PWD/bakfiles2) bakfiles2/
+::rsync -a myfile /foo/bar/ # works if /foo exists but /foo/bar doesn't.  bar is created.
+cp -a $PWD/. $PWD/bakfiles2/
+rsync -r source/ destination
+rsync -r $PWD/ $PWD/bakfiles/
+rsync -r $PWD/ $PWD/_bakfiles_$(date +%Y%m%d-%H%M%S)/
+rsync -rv --exclude='_bak*/' /path/in/source/ /path/to/destination
+rsync -rv --exclude='_bak*/' $PWD/ $PWD/_bakfiles_$(date +%Y%m%d-%H%M%S)/
+OR
+shopt -s extglob
+backup_dir="_bak_$(date +'%Y%m%d_%H%M%S')"
+mkdir "$backup_dir"
+cp -p !(_bak_*) "$backup_dir/"
+
+:: Print date value in Linux Terminal:
+dt=$(date) && echo $dt $HOSTNAME && cd /var/www/minadjewelry.com
+DATE=`date +%Y-%m-%d`
+DATE=`date +%Y-%m-%d:%H:%M:%S`
+$(date +%F)
+
+:: Run a command after running clear/reset:
+cd /var/www/minadjewelry.com
+
+:: Delete all folders whose name starts with "allProductImages_";
+find -type d -name "allProductImages_*" -exec rmdir {} \;
+find -type d -name "allProductImages_*" -exec rm -rf {} \;
