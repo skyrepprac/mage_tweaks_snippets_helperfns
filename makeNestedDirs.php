@@ -1,13 +1,13 @@
 <?php
 $date = new DateTime();
-define('DIRNAME_PREFIX', $dirNamePrefix = $date->format('Y-m-d_H-i-s'));
+define('DIRNAME_SUFFIX', $dirNamePrefix = $date->format('Y-m-d_H-i-s'));
 ?>
 <?php if (!empty($_POST)):
 	$path = $_POST['nested_dirs'];
 	$text = trim($_POST['nested_dirs']);
 	$textAr = explode("\n", $text);
 	$textAr = array_filter($textAr, 'trim');
-	$mainDir = "MageRewrite_" . DIRNAME_PREFIX;
+	$mainDir = "MageRewrite_" . DIRNAME_SUFFIX;
 	foreach($textAr as $dirPath):
 		$dirPath = $mainDir . DIRECTORY_SEPARATOR . $dirPath . DIRECTORY_SEPARATOR;
 		try {
