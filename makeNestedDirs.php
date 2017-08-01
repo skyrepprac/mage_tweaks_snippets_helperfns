@@ -7,7 +7,9 @@ define('DIRNAME_SUFFIX', $dirNamePrefix = $date->format('Y-m-d_H-i-s'));
 	$text = trim($_POST['nested_dirs']);
 	$textAr = explode("\n", $text);
 	$textAr = array_filter($textAr, 'trim');
-	$mainDir = "MageRewrite_" . DIRNAME_SUFFIX;
+	$mainDir = (isset($_POST['main_dir']) && !empty($_POST['main_dir'])) ? 
+													$_POST['main_dir'] : 
+													"MageRewrite_" . DIRNAME_SUFFIX;
 	foreach($textAr as $dirPath):
 		$dirPath = $mainDir . DIRECTORY_SEPARATOR . $dirPath . DIRECTORY_SEPARATOR;
 		try {
@@ -19,6 +21,8 @@ define('DIRNAME_SUFFIX', $dirNamePrefix = $date->format('Y-m-d_H-i-s'));
 	endforeach;
 else: ?>
 	<form action=<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?> method="post">
-		Nested Directories: <textarea style="border: 1px solid black;" name="nested_dirs" rows="7" cols="70"></textarea><br/> <input value="MKDIRs" type="submit">
+		Main Directory: <input type="text" style="border: 1px solid black;" name="main_dir"/><br/><br/>
+		Nested Directories: <textarea style="border: 1px solid black;" name="nested_dirs" rows="7" cols="70"></textarea><br/><br/>
+		<input value="MKDIRs" type="submit">
 	</form>
 <?php endif; ?>
